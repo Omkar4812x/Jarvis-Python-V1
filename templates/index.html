@@ -1,0 +1,542 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genius AI | Premium</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Lato:wght@300;400&display=swap');
+        :root { --gold: #D4AF37; --glass: rgba(255, 255, 255, 0.8); }
+        body { margin: 0; background: linear-gradient(135deg, #fdfbf7 0%, #e8e6e1 100%); height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Lato', sans-serif; overflow: hidden; }
+        .container { background: var(--glass); backdrop-filter: blur(20px); width: 90%; max-width: 500px; padding: 40px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.05); text-align: center; }
+        h1 { font-family: 'Playfair Display', serif; color: #2C2C2C; margin-bottom: 5px; font-size: 2rem; }
+        .orb-container { height: 150px; display: flex; justify-content: center; align-items: center; margin: 30px 0; }
+        .orb { width: 80px; height: 80px; background: linear-gradient(45deg, var(--gold), #F6E27A); border-radius: 50%; box-shadow: 0 0 30px rgba(212, 175, 55, 0.4); transition: all 0.3s ease; }
+        .listening .orb { animation: pulse 1.5s infinite; transform: scale(1.2); }
+        .speaking .orb { animation: vibrate 0.2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); } 70% { box-shadow: 0 0 0 30px rgba(212, 175, 55, 0); } 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); } }
+        @keyframes vibrate { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .btn { background: white; border: 1px solid #ddd; padding: 15px; border-radius: 12px; cursor: pointer; font-family: 'Lato', sans-serif; font-weight: 600; transition: all 0.3s; }
+        .btn:hover { border-color: var(--gold); transform: translateY(-2px); }
+        .btn-stop { grid-column: span 2; background: #fff0f0; color: #d9534f; border-color: #ffcccc; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Genius AI</h1>
+        <p style="color:#888; font-size:0.9rem; letter-spacing:2px; text-transform:uppercase; margin-bottom:30px;">Premium Voice Assistant</p>
+        
+        <div id="selection-screen">
+            <p>Select Mode:</p>
+            <div class="btn-grid">
+                <button class="btn" onclick="startMode('1')">English</button>
+                <button class="btn" onclick="startMode('2')">Hindi</button>
+            </div>
+        </div>
+
+        <div id="active-screen" class="hidden">
+            <div class="orb-container" id="orb-container"><div class="orb"></div></div>
+            <div id="status-text" style="font-weight:bold; color:#D4AF37; margin-bottom:10px;">Connecting...</div>
+            <div id="conversation" style="min-height:40px; font-style:italic; color:#555; margin-bottom:30px;">...</div>
+            <div class="btn-grid"><button class="btn btn-stop" onclick="shutdown()">End Session</button></div>
+        </div>
+    </div>
+    <script>
+        let poller;
+        function startMode(mode) {
+            document.getElementById('selection-screen').classList.add('hidden');
+            document.getElementById('active-screen').classList.remove('hidden');
+            fetch(`/start_mode/${mode}`);
+            poller = setInterval(checkStatus, 500);
+        }
+        function checkStatus() {
+            fetch('/status').then(r => r.json()).then(data => {
+                document.getElementById('status-text').innerText = data.status.toUpperCase();
+                if(data.last_text) document.getElementById('conversation').innerText = `"${data.last_text}"`;
+                const orb = document.getElementById('orb-container');
+                orb.className = 'orb-container';
+                if (data.status === 'listening') orb.classList.add('listening');
+                if (data.status === 'speaking') orb.classList.add('speaking');
+                if (data.status === 'stopped') { clearInterval(poller); window.close(); }
+            });
+        }
+        function shutdown() { fetch('/shutdown'); setTimeout(() => window.close(), 2000); }
+    </script>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STARK INDUSTRIES | MK-85 HUD</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --cyan: #00f3ff;
+            --cyan-dim: rgba(0, 243, 255, 0.2);
+            --cyan-glow: rgba(0, 243, 255, 0.6);
+            --danger: #ff3333;
+            --bg: #020406;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(circle at 50% 50%, #0d1e2d 0%, #000 85%),
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+            height: 100vh;
+            width: 100vw;
+            color: var(--cyan);
+            font-family: 'Share Tech Mono', monospace;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- LAYOUT ANIMATION --- */
+        .interface {
+            width: 95vw;
+            height: 90vh;
+            display: grid;
+            grid-template-columns: 280px 1fr 280px;
+            grid-template-rows: 60px 1fr 100px;
+            position: relative;
+            animation: bootUp 1s ease-out;
+            transition: all 0.5s ease;
+        }
+
+        @keyframes bootUp {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* --- TOP RIGHT CONTROLS (NEW) --- */
+        .top-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 200;
+        }
+
+        .btn-ctrl {
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            background: rgba(0, 243, 255, 0.05);
+            padding: 8px 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-ctrl:hover {
+            background: var(--cyan);
+            color: #000;
+            box-shadow: 0 0 20px var(--cyan);
+        }
+
+        .btn-danger {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: rgba(255, 51, 51, 0.05);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: #fff;
+            box-shadow: 0 0 20px var(--danger);
+        }
+
+
+        /* --- DECORATIVE BORDERS --- */
+        .border-line {
+            position: absolute;
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
+            opacity: 0.6;
+        }
+        .top-bar { top: 0; left: 0; width: 100%; height: 2px; }
+        .bottom-bar { bottom: 0; left: 0; width: 100%; height: 2px; }
+
+        /* --- LEFT PANEL --- */
+        .panel-left {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-right: 1px solid var(--cyan-dim);
+        }
+
+        .stark-logo {
+            font-family: 'Antonio', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--cyan), transparent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+        .logo-sub { font-size: 0.8rem; letter-spacing: 4px; color: var(--cyan); opacity: 0.7; margin-bottom: 30px; }
+
+        .suit-figure {
+            flex-grow: 1;
+            border: 1px solid var(--cyan-dim);
+            background: rgba(0, 243, 255, 0.02);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--cyan-dim);
+            animation: flicker 4s infinite;
+        }
+        .suit-figure::after { content: "SUIT: MK-85"; font-size: 0.8rem; letter-spacing: 2px; }
+
+        /* --- RIGHT PANEL --- */
+        .panel-right {
+            padding: 20px;
+            border-left: 1px solid var(--cyan-dim);
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .data-box {
+            border: 1px solid var(--cyan-dim);
+            padding: 10px;
+            background: rgba(0, 243, 255, 0.02);
+            position: relative;
+        }
+        .data-box::before {
+            content: ""; position: absolute; top: -1px; right: -1px; width: 10px; height: 10px;
+            border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan);
+        }
+        
+        .data-title { font-size: 0.7rem; color: #fff; opacity: 0.5; margin-bottom: 5px; text-transform: uppercase; }
+        .big-text { font-size: 2rem; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+
+        /* --- CENTER STAGE --- */
+        .center-stage {
+            grid-column: 2;
+            grid-row: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            flex-direction: column;
+        }
+
+        /* ARC REACTOR */
+        .arc-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .circle { position: absolute; border-radius: 50%; }
+
+        .c-core {
+            width: 140px; height: 140px;
+            background: radial-gradient(circle, #ffffff 10%, var(--cyan) 60%, transparent 90%);
+            box-shadow: 0 0 60px var(--cyan-glow), inset 0 0 20px #fff;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Antonio', sans-serif;
+            font-size: 1.5rem;
+            color: #000;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px white;
+        }
+
+        .c-inner {
+            width: 180px; height: 180px;
+            border: 2px dashed var(--cyan);
+            opacity: 0.8;
+            animation: rotate-cw 20s linear infinite;
+        }
+
+        .c-mid {
+            width: 260px; height: 260px;
+            background: repeating-conic-gradient(var(--cyan) 0 5deg, transparent 5deg 15deg);
+            -webkit-mask: radial-gradient(transparent 60%, black 61%);
+            mask: radial-gradient(transparent 60%, black 61%);
+            opacity: 0.7;
+            animation: rotate-ccw 10s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+        }
+
+        .c-outer {
+            width: 350px; height: 350px;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-top: 4px solid var(--cyan);
+            border-bottom: 4px solid var(--cyan);
+            animation: rotate-scan 8s ease-in-out infinite;
+        }
+
+        @keyframes rotate-cw { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes rotate-ccw { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
+        @keyframes rotate-scan { 
+            0% { transform: rotate(0deg); opacity: 0.5; } 
+            50% { transform: rotate(180deg); opacity: 1; border-color: #fff; } 
+            100% { transform: rotate(360deg); opacity: 0.5; } 
+        }
+        @keyframes flicker { 0% { opacity: 1; } 95% { opacity: 1; } 96% { opacity: 0.8; } 97% { opacity: 1; } 98% { opacity: 0.5; } 99% { opacity: 1; } }
+
+        /* STATES */
+        .listening .c-core {
+            animation: pulse-deep 1.5s infinite alternate;
+            background: radial-gradient(circle, #fff 30%, var(--cyan) 70%, transparent 100%);
+        }
+        .speaking .c-core {
+            background: radial-gradient(circle, #fff 0%, #ff0055 60%, transparent 100%);
+            box-shadow: 0 0 80px #ff0055;
+            animation: vibrate 0.1s infinite;
+        }
+        .speaking .c-outer { border-color: #ff0055; animation-duration: 1s; }
+
+        @keyframes pulse-deep { 0% { transform: scale(0.95); box-shadow: 0 0 40px var(--cyan); } 100% { transform: scale(1.05); box-shadow: 0 0 90px var(--cyan); } }
+        @keyframes vibrate { 0% { transform: translate(0,0); } 20% { transform: translate(-2px,2px); } 40% { transform: translate(-2px,-2px); } 60% { transform: translate(2px,2px); } 80% { transform: translate(2px,-2px); } }
+
+        /* --- MAIN UI CONTROLS --- */
+        #selection-screen {
+            position: absolute;
+            z-index: 100;
+            background: rgba(0,0,0,0.95);
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(20px);
+        }
+
+        .btn {
+            background: rgba(0, 243, 255, 0.05);
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            padding: 15px 50px;
+            font-family: 'Antonio', sans-serif;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin: 15px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover { background: var(--cyan); color: #000; box-shadow: 0 0 40px var(--cyan); }
+
+        .btn-stop {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: rgba(255, 51, 51, 0.05);
+            font-size: 1.2rem;
+            padding: 12px 40px;
+            margin-top: 20px;
+        }
+        .btn-stop:hover { background: var(--danger); color: #fff; box-shadow: 0 0 50px var(--danger); }
+
+        .hidden { display: none !important; }
+
+        #status-text {
+            margin-top: 20px;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px var(--cyan);
+            letter-spacing: 2px;
+        }
+        
+        #conversation {
+            margin-top: 15px;
+            font-style: italic;
+            color: #eee;
+            min-height: 40px;
+            text-align: center;
+            width: 80%;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        select {
+            background: #000;
+            color: var(--cyan);
+            border: 1px solid var(--cyan);
+            padding: 8px;
+            font-family: 'Share Tech Mono', monospace;
+            width: 200px;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-controls">
+        <button class="btn-ctrl" onclick="toggleFullScreen()">[ ⛶ ] FULLSCREEN</button>
+        <button class="btn-ctrl btn-danger" onclick="shutdown()">[ X ] ABORT</button>
+    </div>
+
+    <div id="selection-screen">
+        <h1 class="stark-logo" style="font-size: 4rem;">STARK INDUSTRIES</h1>
+        <p style="letter-spacing: 5px; margin-bottom: 50px;">SECURE SERVER ACCESS</p>
+        <div>
+            <button class="btn" onclick="startMode('1')">ENG PROTOCOL</button>
+            <button class="btn" onclick="startMode('2')">HIN PROTOCOL</button>
+        </div>
+    </div>
+
+    <div class="interface hidden" id="active-screen">
+        <div class="border-line top-bar"></div>
+        <div class="border-line bottom-bar"></div>
+
+        <div class="panel-left">
+            <div class="stark-logo">STARK<br>OS V.4.2</div>
+            <div class="logo-sub">CONNECTED</div>
+            <div class="suit-figure"></div> 
+        </div>
+
+        <div class="center-stage">
+            <div class="arc-container" id="orb-container">
+                <div class="circle c-outer"></div>
+                <div class="circle c-mid"></div>
+                <div class="circle c-inner"></div>
+                <div class="circle c-core">JARVIS</div>
+            </div>
+
+            <div id="status-text">INITIALIZING...</div>
+            <div id="conversation">"Awaiting Input..."</div>
+            
+            <div style="margin-top: 30px; text-align: center; display:flex; flex-direction:column; align-items:center;">
+                <label style="font-size: 0.8rem; margin-bottom:5px;">AUDIO SYNTHESIS</label>
+                <select id="voiceSelect" onchange="changeVoice()"></select>
+                <button class="btn btn-stop" onclick="shutdown()">END SESSION</button>
+            </div>
+        </div>
+
+        <div class="panel-right">
+            <div class="data-box">
+                <div class="data-title">System Status</div>
+                <div style="color:#0f0">ONLINE</div>
+            </div>
+            <div class="data-box">
+                <div class="data-title">CPU Load</div>
+                <div class="big-text" id="cpu-val">12%</div>
+            </div>
+            <div class="data-box" style="flex-grow: 1;">
+                <div class="data-title">Diagnostics</div>
+                <div style="font-size: 0.7rem; line-height: 1.6; opacity: 0.8;">
+                    > MEMORY: OPTIMAL<br>
+                    > NETWORK: SECURE<br>
+                    > COOLING: ACTIVE<br>
+                    > UPLINK: ESTABLISHED
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let poller;
+
+        // --- FULLSCREEN TOGGLE LOGIC ---
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+
+        // Random CPU Stats
+        setInterval(() => {
+            const val = Math.floor(Math.random() * 30) + 10;
+            document.getElementById('cpu-val').innerText = val + "%";
+        }, 800);
+
+        function startMode(mode) {
+            document.getElementById('selection-screen').classList.add('hidden');
+            document.getElementById('active-screen').classList.remove('hidden');
+            fetch(`/start_mode/${mode}`);
+            loadVoices();
+            poller = setInterval(checkStatus, 500);
+        }
+
+        function loadVoices() {
+            fetch('/get_voices')
+                .then(r => r.json())
+                .then(voices => {
+                    const select = document.getElementById('voiceSelect');
+                    select.innerHTML = "";
+                    voices.forEach((v, index) => {
+                        let option = document.createElement("option");
+                        option.value = v.id;
+                        option.text = v.name || `Voice ID ${index+1}`;
+                        select.appendChild(option);
+                    });
+                });
+        }
+
+        function changeVoice() {
+            const voiceId = document.getElementById('voiceSelect').value;
+            fetch('/set_voice', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({voice_id: voiceId})
+            });
+        }
+
+        function checkStatus() {
+            fetch('/status').then(r => r.json()).then(data => {
+                const statusEl = document.getElementById('status-text');
+                const orb = document.getElementById('orb-container');
+
+                statusEl.innerText = data.status.toUpperCase();
+                
+                if(data.last_text) {
+                    document.getElementById('conversation').innerText = `"${data.last_text}"`;
+                }
+
+                orb.classList.remove('listening', 'speaking');
+
+                if (data.status === 'listening') {
+                    orb.classList.add('listening');
+                    statusEl.style.color = "var(--cyan)";
+                    statusEl.innerText = "LISTENING...";
+                }
+                if (data.status === 'speaking') {
+                    orb.classList.add('speaking');
+                    statusEl.style.color = "#ff0055";
+                    statusEl.innerText = "PROCESSING...";
+                }
+                if (data.status === 'stopped') {
+                    clearInterval(poller);
+                    window.close();
+                }
+            });
+        }
+
+        function shutdown() {
+            fetch('/shutdown');
+            document.getElementById('status-text').style.color = "red";
+            document.getElementById('status-text').innerText = "SYSTEM FAILURE...";
+            setTimeout(() => window.close(), 2000);
+        }
+    </script>
+</body>
+</html>

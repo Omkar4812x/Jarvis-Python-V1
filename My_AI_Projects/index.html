@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midnight Luxury Hotel</title>
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #0a0a0a;
+            --secondary-color: #ffd700;
+            --background-color: #0a0a0a;
+            --text-color: #ffffff;
+            --hover-color: #333333;
+            --cursor-color: #ffd700;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(1rem, 2vw, 2rem);
+            line-height: 1.5;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            overflow-x: hidden;
+        }
+
+        /* Cursor Styles */
+        .cursor {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--cursor-color);
+            pointer-events: none;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .cursor::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--cursor-color);
+            pointer-events: none;
+        }
+
+        /* Hero Section Styles */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://source.unsplash.com/random/1920x1080/?abstract,dark,gold');
+            background-size: cover;
+            background-position: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-color);
+            opacity: 0.5;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 5vw, 5rem);
+            font-weight: bold;
+            color: var(--text-color);
+            text-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .hero p {
+            font-size: clamp(1.5rem, 2vw, 2rem);
+            color: var(--text-color);
+            text-shadow: 0 0 5px var(--primary-color);
+        }
+
+        /* Services Section Styles */
+        .services {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .service {
+            background-color: var(--primary-color);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--primary-color);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .service:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        .service img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .service h2 {
+            font-size: clamp(1.5rem, 2vw, 2rem);
+            font-weight: bold;
+            color: var(--text-color);
+            text-shadow: 0 0 5px var(--primary-color);
+        }
+
+        .service p {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: var(--text-color);
+            text-shadow: 0 0 5px var(--primary-color);
+        }
+
+        /* Footer Section Styles */
+        .footer {
+            background-color: var(--primary-color);
+            padding: 20px;
+            text-align: center;
+            color: var(--text-color);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .footer a {
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: var(--hover-color);
+        }
+
+        /* Animation Styles */
+        @keyframes enter {
+            0% {
+                opacity: 0;
+                transform: translateY(-100px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .enter {
+            animation: enter 0.5s ease-in-out;
+        }
+
+        @keyframes leave {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100px);
+            }
+        }
+
+        .leave {
+            animation: leave 0.5s ease-in-out;
+        }
+
+        /* Magnetic Button Styles */
+        .magnetic-button {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: var(--primary-color);
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .magnetic-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--cursor-color);
+            pointer-events: none;
+        }
+
+        .magnetic-button:hover {
+            transform: translateY(-10px);
+        }
+
+        /* Neumorphism Button Styles */
+        .neumorphism-button {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: var(--primary-color);
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .neumorphism-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--cursor-color);
+            pointer-events: none;
+        }
+
+        .neumorphism-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            pointer-events: none;
+        }
+
+        .neumorphism-button:hover {
+            transform: translateY(-10px);
+        }
+
+        /* Glassmorphism Button Styles */
+        .glassmorphism-button {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: var(--primary-color);
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .glassmorphism-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--cursor-color);
+            pointer-events: none;
+        }
+
+        .glassmorphism-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            pointer-events: none;
+        }
+
+        .glassmorphism-button:hover {
+            transform: translateY(-10px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Cursor -->
+    <div class="cursor"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="enter">Welcome to Midnight Luxury Hotel</h1>
+        <p class="enter">Experience the ultimate in luxury and comfort</p>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <div class="service">
+            <img src="https://source.unsplash.com/random/400x150/?hotel,lobby" alt="Hotel Lobby">
+            <h2>Hotel Lobby</h2>
+            <p>Experience the grandeur of our hotel lobby, complete with comfortable seating and stunning decor</p>
+        </div>
+        <div class="service">
+            <img src="https://source.unsplash.com/random/400x150/?hotel,room" alt="Hotel Room">
+            <h2>Hotel Room</h2>
+            <p>Our hotel rooms are designed to provide the ultimate in comfort and relaxation, complete with plush bedding and modern amenities</p>
+        </div>
+        <div class="service">
+            <img src="https://source.unsplash.com/random/400x150/?hotel,restaurant" alt="Hotel Restaurant">
+            <h2>Hotel Restaurant</h2>
+            <p>Enjoy a delicious meal at our on-site restaurant, serving up a range of international cuisine</p>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>&copy; 2023 Midnight Luxury Hotel</p>
+        <a href="#">Terms and Conditions</a>
+        <a href="#">Privacy Policy</a>
+    </footer>
+
+    <!-- Magnetic Button -->
+    <button class="magnetic-button">Book Now</button>
+
+    <!-- Neumorphism Button -->
+    <button class="neumorphism-button">Book Now</button>
+
+    <!-- Glassmorphism Button -->
+    <button class="glassmorphism-button">Book Now</button>
+
+    <script>
+        // Create a custom cursor
+        const cursor = document.querySelector('.cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.top = `${e.clientY}px`;
+            cursor.style.left = `${e.clientX}px`;
+        });
+
+        // Create magnetic buttons
+        const magneticButtons = document.querySelectorAll('.magnetic-button');
+        magneticButtons.forEach((button) => {
+            button.addEventListener('mouseover', () => {
+                button.style.transform = 'translateY(-10px)';
+            });
+            button.addEventListener('mouseout', () => {
+                button.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Create neumorphism buttons
+        const neumorphismButtons = document.querySelectorAll('.neumorphism-button');
+        neumorphismButtons.forEach((button) => {
+            button.addEventListener('mouseover', () => {
+                button.style.transform = 'translateY(-10px)';
+            });
+            button.addEventListener('mouseout', () => {
+                button.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Create glassmorphism buttons
+        const glassmorphismButtons = document.querySelectorAll('.glassmorphism-button');
+        glassmorphismButtons.forEach((button) => {
+            button.addEventListener('mouseover', () => {
+                button.style.transform = 'translateY(-10px)';
+            });
+            button.addEventListener('mouseout', () => {
+                button.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
